@@ -1,28 +1,19 @@
-
 -module(etl_sup).
-
+-author ("roux <roux@mk1s.com>").
 -behaviour(supervisor).
-
-%% API
--export([start_link/0]).
-
-%% Supervisor callbacks
+-export([start_link/0, stop/0]).
 -export([init/1]).
 
-%% Helper macro for declaring children of supervisor
 -define(CHILD(I, Type), {I, {I, start_link, []}, permanent, 5000, Type, [I]}).
 
-%% ===================================================================
-%% API functions
-%% ===================================================================
-
 start_link() ->
+	application:start(lager),
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
-%% ===================================================================
-%% Supervisor callbacks
-%% ===================================================================
-
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+    {ok, { {one_for_one, 5, 10}, [?CHILD(etl_job_handler, worker)]} }.
 
+stop() ->
+	lager:warning("ETL is shutting down.~n"),
+	application:stop(lager),
+	application:stop(?MODULE).
