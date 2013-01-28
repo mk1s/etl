@@ -1,0 +1,7 @@
+deps
+log
+ebin
+*.dump
+*.beam
+*.log
+
