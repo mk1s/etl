@@ -10,4 +10,5 @@ start(_StartType, _StartArgs) ->
     etl_sup:start_link().
 
 stop(_State) ->
+	etl_sup:stop(),
     ok.

@@ -11,9 +11,18 @@ start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, [?CHILD(etl_job_handler, worker)]} }.
+	Children = [
+		?CHILD(etl_extract_server, worker),
+		?CHILD(etl_transform_server, worker),
+		?CHILD(etl_load_server, worker),
+		?CHILD(etl_amqp_broker, worker)
+	],
+	
+    {ok, { {one_for_one, 5, 10}, Children} }.
 
 stop() ->
-	lager:warning("ETL is shutting down.~n"),
+	application:stop(etl_extract_server),
+	application:stop(etl_transform_server),
+	application:stop(etl_load_server),
 	application:stop(lager),
 	application:stop(?MODULE).

@@ -1,12 +1,12 @@
 {application, etl,
  [
-  {description, ""},
-  {vsn, "1"},
+  {description, "roux ETL platform"},
+  {vsn, "0.1"},
   {registered, []},
   {applications, [
                   kernel,
-                  stdlib	
+                  stdlib
                  ]},
-  {mod, { etl_app, [etl_sup, etl_server]}},
+  {mod, { etl_app, []}},
   {env, []}
  ]}.

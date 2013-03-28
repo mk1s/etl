@@ -1,3 +1,4 @@
+
 all: dep compile
 
 dep:
@@ -7,6 +8,7 @@ compile:
 	./rebar compile
 
 rel: all
+	./rebar generate
 
 clean:
 	rm -rf log/*
